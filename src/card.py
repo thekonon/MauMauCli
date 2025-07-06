@@ -13,11 +13,16 @@ class Card():
         self._position = [0, 0]             # Top left coordinate of card
         self._angle = 0                     # CUrrent card angle
 
+        self._animation = 0
+        self._animation_step = 0
+
         self._img: pygame.Surface           # Instance of Card Surface
 
         self._load_img()                    # Load image from file
 
     def render_card(self, surface: pygame.Surface):
+        if self._animation:
+            self._move_to_middle()
         surface.blit(self._get_transformed_img(), self._position)
 
     def move_card(self, x = 0, y = 0, absolute = True):
@@ -35,13 +40,27 @@ class Card():
         return self._img
     
     def is_click_on_card(self, clicked_position) -> bool:
-        return self._img.get_rect().collidepoint(clicked_position)
+        transformed_clicked_position = (clicked_position[0] - self._position[0],
+                                        clicked_position[1] - self._position[1])
+        return self._get_transformed_img().get_rect().collidepoint(transformed_clicked_position)
+    
+    def move_to_middle(self):
+        self._animation = 1
+        self.dx = int((500 - self._position[0]) // 100)
+        self.dy = int((300 - self._position[1]) // 100)
     
     def _get_transformed_img(self) -> pygame.Surface:
         return pygame.transform.rotate(self._img, self._angle)
     
     def _scale_img(self) -> pygame.Surface:
         return pygame.transform.scale(self._img, size=(self._WIDTH, self._HEIGHT))
+    
+    def _move_to_middle(self):
+        self.move_card(self.dx,self.dy,absolute=False)
+        self._animation_step += 1
+        if self._animation_step == 100:
+            self._animation = 0
+            self._animation_step = 0
 
     def _load_img(self):
         # Make a backup of original
