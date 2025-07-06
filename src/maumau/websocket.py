@@ -1,9 +1,4 @@
-try:
-    from src.card import Card
-except ModuleNotFoundError:
-    from card import Card
-
-
+from .card import Card
 
 class WebSocket():
     def __init__(self):
