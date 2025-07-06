@@ -7,16 +7,15 @@ except ModuleNotFoundError:
 
 class WebSocket():
     def __init__(self):
-        self.cards = [("S", "7"), ("C", "8"), ("C", "7"), 
-                      ("C", "7"),
-                      ("C", "9"),
-                      ("C", "J"),
-                      ("C", "Q")]
+        self.types = ["S", "C", "D", "H"]
+        self.values = ["7", "8", "9","J", "Q","K","A"]
 
     def draw_card(self) -> Card:
         # This needs to be implemented
         import random
-        return Card(*random.sample(self.cards, 1)[0])
+        type = random.sample(self.types, 1)[0]
+        value = random.sample(self.values, 1)[0]
+        return Card(type, value)
     
     def play_card(self, card: Card) -> bool:
         # This needs to be implemented
