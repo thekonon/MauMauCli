@@ -43,7 +43,7 @@ class MauMauGame():
                         clicked_card = self.main_player.find_clicked_card(event.pos)
                         # Card is cliked and is valid
                         if clicked_card and self.web_socket.play_card(clicked_card):
-                            clicked_card.move_to_middle()
+                            self.main_player.card_played(clicked_card)
                             self.card_deck.push_card(clicked_card)
 
                     # Card drawing request

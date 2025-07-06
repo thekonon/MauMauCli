@@ -29,9 +29,13 @@ class MainPlayer():
     def find_clicked_card(self, clicked_position):
         for card in self._cards:
             if card.is_click_on_card(clicked_position):
-                self._cards.remove(card)
                 return card
         return None
+    
+    def card_played(self, card: Card):
+        self._cards.remove(card)
+        card.move_to_middle()
+        self._update_cards_position()
 
     def _update_cards_position(self):
         # Logic for displaying cards goes here
