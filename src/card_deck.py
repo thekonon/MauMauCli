@@ -22,3 +22,9 @@ class CardDeck():
 
     def push_card(self, card: Card):
         self._cards.append(card)
+
+    def _remove_dead_cards(self):
+        for card in self._cards:
+            if len(self._cards) > 1:
+                self._cards.remove(card)
+                del card

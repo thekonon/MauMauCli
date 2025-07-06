@@ -12,6 +12,7 @@ class Card():
         self._HEIGHT = 90                   # Size of 
         self._position = [0, 0]             # Top left coordinate of card
         self._angle = 0                     # CUrrent card angle
+        self._is_dead = 0
 
         self._animation = 0
         self._animation_step = 0
@@ -21,9 +22,12 @@ class Card():
         self._load_img()                    # Load image from file
 
     def render_card(self, surface: pygame.Surface):
-        if self._animation:
-            self._move_to_middle()
+        if self._animation == 1:
+            self._move()
+
         surface.blit(self._get_transformed_img(), self._position)
+        rect = self._get_transformed_img().get_rect().move(self._position)
+        pygame.draw.rect(surface, (0,0,0), rect, width=1, border_radius=3)
 
     def move_card(self, x = 0, y = 0, absolute = True):
         if absolute:
@@ -45,9 +49,16 @@ class Card():
         return self._get_transformed_img().get_rect().collidepoint(transformed_clicked_position)
     
     def move_to_middle(self):
+        self._move_to_position(500, 300)
+
+    def move_to_hand(self, end_point):
+        self._position = [480, 205]
+        self._move_to_position(*end_point)
+
+    def _move_to_position(self, x, y):
         self._animation = 1
-        self.dx = int((500 - self._position[0]) // 100)
-        self.dy = int((300 - self._position[1]) // 100)
+        self.dx = ((x - self._position[0]) / 100)
+        self.dy = ((y - self._position[1]) / 100)
     
     def _get_transformed_img(self) -> pygame.Surface:
         return pygame.transform.rotate(self._img, self._angle)
@@ -55,12 +66,13 @@ class Card():
     def _scale_img(self) -> pygame.Surface:
         return pygame.transform.scale(self._img, size=(self._WIDTH, self._HEIGHT))
     
-    def _move_to_middle(self):
+    def _move(self):
         self.move_card(self.dx,self.dy,absolute=False)
         self._animation_step += 1
         if self._animation_step == 100:
             self._animation = 0
             self._animation_step = 0
+            self._is_dead = 1
 
     def _load_img(self):
         # Make a backup of original

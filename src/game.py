@@ -50,6 +50,7 @@ class MauMauGame():
                     if self.card_deck.is_clicked_in_boundaries(event.pos):
                         drawn_card = self.web_socket.draw_card()
                         self.main_player.draw_card(drawn_card)
+                        drawn_card.move_to_hand(self.main_player.get_new_card_location())
 
                 # Game end
                 if event.type == pygame.QUIT:

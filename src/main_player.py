@@ -12,6 +12,10 @@ class MainPlayer():
         self.STARTING_POSITION = [100, 400]
         self.BOX_SIZE = [800, 200]
 
+        self._dx = 100
+        self._x_offset = 5
+        self._y_offset = 10
+
         self._boundary_rect: pygame.Rect = None
 
     def render(self, surface):
@@ -37,16 +41,23 @@ class MainPlayer():
         card.move_to_middle()
         self._update_cards_position()
 
+    def get_new_card_location(self) -> tuple:
+        total_cards = len(self._cards)
+        pos_x, pos_y = self.STARTING_POSITION
+        pos_x += self._x_offset 
+        pos_y += self._y_offset 
+        pos_x += total_cards*self._dx
+        return (pos_x, pos_y)
+
     def _update_cards_position(self):
         # Logic for displaying cards goes here
         total_cards = len(self._cards)
         pos_x, pos_y = self.STARTING_POSITION
-        pos_x += 10
-        pos_y += 5
-        dx = 100
+        pos_x += self._x_offset 
+        pos_y += self._y_offset 
         for card in self._cards:
             card.move_card(pos_x, pos_y)
-            pos_x += dx
+            pos_x += self._dx
 
     def _draw_boundaries(self, surface):
         pygame.draw.rect(surface, (0,200,0), self._get_boundary_rect())
