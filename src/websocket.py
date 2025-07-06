@@ -7,7 +7,11 @@ except ModuleNotFoundError:
 
 class WebSocket():
     def __init__(self):
-        self.cards = [("S", "7"), ("C", "8")]
+        self.cards = [("S", "7"), ("C", "8"), ("C", "7"), 
+                      ("C", "7"),
+                      ("C", "9"),
+                      ("C", "J"),
+                      ("C", "Q")]
 
     def draw_card(self) -> Card:
         # This needs to be implemented

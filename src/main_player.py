@@ -29,8 +29,6 @@ class MainPlayer():
     def find_clicked_card(self, clicked_position):
         for card in self._cards:
             if card.is_click_on_card(clicked_position):
-                print(f"Card clicked {card._type}, {card._value}")
-                card.move_to_middle()
                 self._cards.remove(card)
                 return card
         return None

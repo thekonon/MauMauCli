@@ -27,10 +27,9 @@ class MauMauGame():
 
         self._init_screen()
 
+        self.main_player = MainPlayer()
         self.web_socket = WebSocket()
         self.card_deck = CardDeck()
-
-        self._test()
 
     def main_loop(self):
         while True:
@@ -38,10 +37,8 @@ class MauMauGame():
             self.main_player.render(self._screen)
             self.card_deck.render_deck(self._screen)
             for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-                    sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
+                    # Clicked on player card region
                     if self.main_player.is_clicked_in_boundaries(event.pos):
                         clicked_card = self.main_player.find_clicked_card(event.pos)
                         # Card is cliked and is valid
@@ -49,18 +46,18 @@ class MauMauGame():
                             clicked_card.move_to_middle()
                             self.card_deck.push_card(clicked_card)
 
+                    # Card drawing request
                     if self.card_deck.is_clicked_in_boundaries(event.pos):
                         drawn_card = self.web_socket.draw_card()
                         self.main_player.draw_card(drawn_card)
-                        
+
+                # Game end
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
 
             pygame.display.update()
             pygame.time.Clock().tick(500)
-
-    def _test(self):
-        self.main_player = MainPlayer()
-        card = Card("S", "7")
-        self.main_player.draw_card(card)
 
     def _clean_board(self):
         self._screen.fill((255,255,255))
