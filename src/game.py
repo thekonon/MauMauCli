@@ -1,5 +1,6 @@
 import pygame
 import sys
+from dataclasses import dataclass
 try:
     from src.card import Card
     from src.main_player import MainPlayer
@@ -9,12 +10,15 @@ except ModuleNotFoundError:
 
 ########################################
 # Game settings:
-SCREEN_WIDTH: int = 600
-SCREEN_HEIGHT: int = 600
+@dataclass
+class Settings:
+    SCREEN_WIDTH: int = 1000
+    SCREEN_HEIGHT: int =  600
+
 
 class MauMauGame():
     def __init__(self):
-        self._screen_size = (SCREEN_WIDTH, SCREEN_HEIGHT)
+        self._screen_size = (Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT)
         self._screen: pygame.surface
 
         pygame.init()
@@ -22,29 +26,56 @@ class MauMauGame():
         self._test()
 
     def main_loop(self):
-        self.card.move_card(x = 100, y = 100)
         while True:
             self._clean_board()
-            self.card.rotate_card(.5)
-            self.card.render_card(self._screen)
+            self.main_player.render(self._screen)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if self.main_player.is_clicked_in_boundaries(event.pos):
+                        print("Clicked on main player")
+                    else:
+                        print("Missed")
+
             pygame.display.update()
             pygame.time.Clock().tick(500)
 
     def _test(self):
         self.main_player = MainPlayer()
-        self.card = Card("S", "7")
+        card = Card("S", "7")
+        self.main_player.draw_card(card)
+        card = Card("C", "8")
+        self.main_player.draw_card(card)
+        card = Card("C", "8")
+        self.main_player.draw_card(card)
+        card = Card("C", "8")
+        self.main_player.draw_card(card)
+        card = Card("C", "8")
+        self.main_player.draw_card(card)
+        card = Card("C", "8")
+        self.main_player.draw_card(card)
+        card = Card("C", "8")
+        self.main_player.draw_card(card)
+        card = Card("C", "8")
+        self.main_player.draw_card(card)
 
     def _clean_board(self):
-        self._screen.fill((0,0,0))
+        self._screen.fill((255,255,255))
 
     def _init_screen(self):
         self._screen = pygame.display.set_mode(self._screen_size)
         self._set_game_caption()
 
+    def _set_game_caption(self):
+        pygame.display.set_caption("mňam mňau")
+
+
+if __name__ == "__main__":
+    print("Starting Mau Mau")
+    mau_mau_game = MauMauGame()
+    mau_mau_game.main_loop()
     def _set_game_caption(self):
         pygame.display.set_caption("mňam mňau")
 

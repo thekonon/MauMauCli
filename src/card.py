@@ -20,15 +20,22 @@ class Card():
     def render_card(self, surface: pygame.Surface):
         surface.blit(self._get_transformed_img(), self._position)
 
-    def move_card(self, x = 0, y = 0):
-        self._position[0] += x
-        self._position[1] += y
+    def move_card(self, x = 0, y = 0, absolute = True):
+        if absolute:
+            self._position[0] = x
+            self._position[1] = y
+        else:
+            self._position[0] += x
+            self._position[1] += y
 
     def rotate_card(self, angle, absolute = False):
         self._angle += angle
 
     def get_og_img(self) -> pygame.Surface:
         return self._img
+    
+    def is_click_on_card(self, clicked_position) -> bool:
+        return self._img.get_rect().collidepoint(clicked_position)
     
     def _get_transformed_img(self) -> pygame.Surface:
         return pygame.transform.rotate(self._img, self._angle)
