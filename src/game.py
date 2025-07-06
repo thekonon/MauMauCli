@@ -19,17 +19,17 @@ class Settings:
     SCREEN_WIDTH: int = 1000
     SCREEN_HEIGHT: int =  600
 
-
+pygame.init()
 class MauMauGame():
     def __init__(self):
         self._screen_size = (Settings.SCREEN_WIDTH, Settings.SCREEN_HEIGHT)
         self._screen: pygame.surface
 
+        self._init_screen()
+
         self.web_socket = WebSocket()
         self.card_deck = CardDeck()
 
-        pygame.init()
-        self._init_screen()
         self._test()
 
     def main_loop(self):
@@ -44,8 +44,15 @@ class MauMauGame():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if self.main_player.is_clicked_in_boundaries(event.pos):
                         clicked_card = self.main_player.find_clicked_card(event.pos)
-                        if clicked_card:
+                        # Card is cliked and is valid
+                        if clicked_card and self.web_socket.play_card(clicked_card):
+                            clicked_card.move_to_middle()
                             self.card_deck.push_card(clicked_card)
+
+                    if self.card_deck.is_clicked_in_boundaries(event.pos):
+                        drawn_card = self.web_socket.draw_card()
+                        self.main_player.draw_card(drawn_card)
+                        
 
             pygame.display.update()
             pygame.time.Clock().tick(500)
@@ -53,20 +60,6 @@ class MauMauGame():
     def _test(self):
         self.main_player = MainPlayer()
         card = Card("S", "7")
-        self.main_player.draw_card(card)
-        card = Card("C", "8")
-        self.main_player.draw_card(card)
-        card = Card("C", "8")
-        self.main_player.draw_card(card)
-        card = Card("C", "8")
-        self.main_player.draw_card(card)
-        card = Card("C", "8")
-        self.main_player.draw_card(card)
-        card = Card("C", "8")
-        self.main_player.draw_card(card)
-        card = Card("C", "8")
-        self.main_player.draw_card(card)
-        card = Card("C", "8")
         self.main_player.draw_card(card)
 
     def _clean_board(self):
