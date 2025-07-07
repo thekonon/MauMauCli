@@ -1,4 +1,4 @@
-from src.game import MauMauGame
+from maumau.game import MauMauGame
 
 if __name__ == "__main__":
     print("Starting Mau Mau")

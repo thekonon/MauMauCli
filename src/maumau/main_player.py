@@ -1,9 +1,6 @@
 import pygame
 from typing import List
-try:
-    from src.card import Card
-except ModuleNotFoundError:
-    from card import Card
+from .card import Card
 
 class MainPlayer():
     def __init__(self):

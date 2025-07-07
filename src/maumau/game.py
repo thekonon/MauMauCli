@@ -1,16 +1,10 @@
 import pygame
 import sys
 from dataclasses import dataclass
-try:
-    from src.card import Card
-    from src.main_player import MainPlayer
-    from src.websocket import WebSocket
-    from src.card_deck import CardDeck
-except ModuleNotFoundError:
-    from card import Card
-    from main_player import MainPlayer
-    from websocket import WebSocket
-    from card_deck import CardDeck
+from .card import Card
+from .main_player import MainPlayer
+from .websocket import WebSocket
+from .card_deck import CardDeck
 
 ########################################
 # Game settings:

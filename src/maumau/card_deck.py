@@ -1,12 +1,7 @@
-import pygame
 from typing import List
-try:
-    from src.card import Card
-except ModuleNotFoundError:
-    from card import Card
+from .card import Card
 
 class CardDeck():
-
     def __init__(self):
         self.top_card: Card = Card("back")
         self.top_card.move_card(480, 205)
